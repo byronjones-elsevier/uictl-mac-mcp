@@ -27,4 +27,4 @@ mkdir -p "$out_dir"
 SYFT_CHECK_FOR_APP_UPDATE=false "$syft" scan "file:$root/Package.resolved" -q \
 	--source-name uictl -o cyclonedx-json |
 	jq '.components |= map(select(.type != "file"))' >"$out_dir/bom.json"
-echo "sbom: wrote $out_dir/bom.json" >&2
+echo "sbom: wrote $(cd "$out_dir" && pwd)/bom.json" >&2

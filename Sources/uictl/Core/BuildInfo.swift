@@ -17,10 +17,10 @@ swift-system           1.8.0
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:2a07feac-0d34-4f6b-9b99-4e317e8cefbd",
+  "serialNumber": "urn:uuid:d273b570-7478-4a74-85be-ebc64afdd6fc",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-27T16:26:36-04:00",
+    "timestamp": "2026-10-27T16:59:38-04:00",
     "tools": {
       "components": [
         {
