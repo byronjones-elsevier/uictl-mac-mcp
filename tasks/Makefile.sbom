@@ -1,0 +1,24 @@
+# Makefile.sbom - targets for dependency inventory and SBOM (libs-version, sbom/*).
+
+# Directory the CycloneDX SBOM is written to (bom.json).
+SBOM_DIR ?= artifacts/sbom
+
+.PHONY: libs-version sbom sbom/install buildinfo
+
+## Print every library the shipped binary depends on (name and version)
+libs-version: deps
+	@scripts/libs-version.sh
+
+## Write a CycloneDX JSON SBOM to SBOM_DIR/bom.json
+sbom: deps
+	@scripts/sbom.sh "$(SBOM_DIR)"
+
+## Install the Syft version pinned in tools/syft.lock into .tools/bin
+sbom/install:
+	@scripts/sbom-install.sh
+
+## Regenerate the libs list and SBOM embedded in the binary (--libs-version, --sbom)
+buildinfo: Sources/uictl/Core/BuildInfo.swift
+
+Sources/uictl/Core/BuildInfo.swift: Package.resolved scripts/libs-version.sh scripts/sbom.sh scripts/gen-buildinfo.sh tools/syft.lock
+	@scripts/gen-buildinfo.sh
