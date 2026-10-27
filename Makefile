@@ -24,6 +24,9 @@ deps:
 ## Build the uictl binary (CONFIG=release|debug)
 build: deps buildinfo
 	swift build -c $(CONFIG)
+	@echo "Built: $(CURDIR)/.build/$(CONFIG)/$(BINARY)"
+	@echo "Run it:  $(CURDIR)/.build/$(CONFIG)/$(BINARY) --help"
+	@echo "Or put it on your PATH:  make install"
 
 ## Build the faster debug binary
 build/debug: CONFIG := debug
@@ -36,6 +39,8 @@ test: deps buildinfo
 ## Symlink the built binary into PREFIX/bin and stop any stale daemon
 install: build daemon/stop
 	ln -sf "$(CURDIR)/.build/$(CONFIG)/$(BINARY)" "$(PREFIX)/bin/$(BINARY)"
+	@echo "Installed: $(PREFIX)/bin/$(BINARY) -> $(CURDIR)/.build/$(CONFIG)/$(BINARY)"
+	@echo "Run it:  $(BINARY) --help"
 
 ## Remove the installed symlink
 uninstall:
