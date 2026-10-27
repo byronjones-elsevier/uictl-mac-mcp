@@ -42,4 +42,33 @@ struct Root: ParsableCommand {
             MCPCommand.self,
         ]
     )
+
+    @Flag(name: .customLong("libs-version"), help: "Print the libraries this build ships (name and version) and exit.")
+    var libsVersion = false
+
+    @Flag(name: .customLong("sbom"), help: "Print this build's CycloneDX JSON SBOM and exit.")
+    var sbom = false
+
+    func validate() throws {
+        if libsVersion && sbom {
+            throw ValidationError("--libs-version and --sbom are mutually exclusive.")
+        }
+    }
+
+    func run() throws {
+        if libsVersion {
+            try emit(BuildInfo.libsVersion, flag: "--libs-version")
+        } else if sbom {
+            try emit(BuildInfo.sbom, flag: "--sbom")
+        } else {
+            throw CleanExit.helpRequest(Root.self)
+        }
+    }
+
+    private func emit(_ text: String?, flag: String) throws {
+        guard let text else {
+            throw ValidationError("\(flag) is unavailable: this build was made without an SBOM (run `make sbom/install`, then `make build`).")
+        }
+        print(text)
+    }
 }

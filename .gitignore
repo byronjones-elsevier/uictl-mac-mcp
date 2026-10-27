@@ -2,3 +2,5 @@
 .swiftpm/
 *.xcodeproj
 .DS_Store
+artifacts/
+.tools/

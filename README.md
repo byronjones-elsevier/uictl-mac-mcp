@@ -96,6 +96,21 @@ environment variable, which the tests point at a temporary directory.
 Tests that drive real apps (Accessibility, screen capture) are not included,
 since they need granted permissions and an interactive session.
 
+## Dependencies and SBOM
+
+```sh
+make libs-version     # every library the binary ships: name  version
+make sbom/install     # install the Syft version pinned in tools/syft.lock
+make sbom             # CycloneDX JSON SBOM at artifacts/sbom/bom.json
+uictl --libs-version  # same list as make libs-version, from the binary itself
+uictl --sbom          # the SBOM embedded in this build
+```
+
+`make build` and `make test` refresh `Sources/uictl/Core/BuildInfo.swift`
+(the data behind the two flags) whenever `Package.resolved` changes. If
+Syft isn't installed they warn and keep the committed copy. Commit the
+regenerated file along with any dependency bump.
+
 ## First run: permissions
 
 uictl needs **Accessibility** and **Screen Recording** permission for

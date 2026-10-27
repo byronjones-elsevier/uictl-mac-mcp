@@ -168,6 +168,13 @@ tool.
 .BR \-h ", " \-H ", " \-\-help ", " \-\-HELP ", " \-?
 Show help. All five spellings are accepted at the top level and are
 normalized onto ArgumentParser's native \fB\-\-help\fR.
+.TP
+.B \-\-libs\-version
+Print the libraries this build ships, one \fIname  version\fR pair per line,
+and exit.
+.TP
+.B \-\-sbom
+Print this build's CycloneDX JSON software bill of materials and exit.
 .SH EXAMPLES
 .PP
 List an application's windows, then screenshot it with element numbers:

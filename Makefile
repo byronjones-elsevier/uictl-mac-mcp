@@ -11,10 +11,7 @@ BINARY ?= uictl
 
 .DEFAULT_GOAL := help
 
-.PHONY: default all deps build build/debug test install uninstall clean help
-
-## Build everything (alias for build)
-default: build
+.PHONY: all deps build build/debug test install uninstall clean help
 
 ## Resolve dependencies and build
 all: deps build
@@ -25,7 +22,7 @@ deps:
 	swift package resolve
 
 ## Build the uictl binary (CONFIG=release|debug)
-build: deps
+build: deps buildinfo
 	swift build -c $(CONFIG)
 
 ## Build the faster debug binary
@@ -33,7 +30,7 @@ build/debug: CONFIG := debug
 build/debug: build
 
 ## Run the unit tests (swift test)
-test: deps
+test: deps buildinfo
 	swift test
 
 ## Symlink the built binary into PREFIX/bin and stop any stale daemon
@@ -44,9 +41,10 @@ install: build daemon/stop
 uninstall:
 	rm -f "$(PREFIX)/bin/$(BINARY)"
 
-## Remove build artifacts
+## Remove build artifacts and the generated SBOM
 clean:
 	swift package clean
+	rm -rf "$(SBOM_DIR)"
 
 ## This help screen
 help:
